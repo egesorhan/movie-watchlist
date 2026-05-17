@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Search movies and TV shows, build your watchlist, and track your viewing progress.">
+    <title>Watchlist — Track Movies & TV Shows</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Background Gradient Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <div class="logo" id="logo">
+                <span class="logo-icon">🎬</span>
+                <h1>Watchlist</h1>
+            </div>
+            <nav class="nav-tabs" id="nav-tabs">
+                <button class="nav-tab active" data-tab="search" id="tab-search">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Search
+                </button>
+                <button class="nav-tab" data-tab="watchlist" id="tab-watchlist">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                    My Watchlist
+                    <span class="watchlist-count" id="watchlist-count">0</span>
+                </button>
+                <button class="nav-tab" data-tab="recommendations" id="tab-recommendations">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    For You
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main" id="main-content">
+
+        <!-- Search Section -->
+        <section class="section active" id="section-search">
+            <div class="search-hero">
+                <h2 class="section-title">Discover Movies & TV</h2>
+                <p class="section-subtitle">Search millions of movies and TV shows from TMDB</p>
+                <div class="search-bar" id="search-bar">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" id="search-input" placeholder="Search movies & TV shows..." autocomplete="off">
+                    <button class="search-clear" id="search-clear" style="display:none;">✕</button>
+                </div>
+                <div class="search-filters" id="search-filters">
+                    <!-- Media Type Toggle -->
+                    <div class="media-toggle" id="media-toggle">
+                        <button class="media-toggle-btn active" data-type="multi" id="toggle-all">All</button>
+                        <button class="media-toggle-btn" data-type="movie" id="toggle-movies">
+                            <span class="media-icon">🎬</span> Movies
+                        </button>
+                        <button class="media-toggle-btn" data-type="tv" id="toggle-tv">
+                            <span class="media-icon">📺</span> TV Shows
+                        </button>
+                    </div>
+                    <select id="genre-filter" class="filter-select">
+                        <option value="">All Genres</option>
+                    </select>
+                    <select id="year-filter" class="filter-select">
+                        <option value="">All Years</option>
+                    </select>
+                    <button class="btn btn-outline" id="discover-btn">Discover</button>
+                </div>
+            </div>
+            <div class="results-grid" id="search-results"></div>
+            <div class="loading-spinner" id="search-loading" style="display:none;">
+                <div class="spinner"></div>
+            </div>
+            <div class="empty-state" id="search-empty" style="display:none;">
+                <div class="empty-icon">🎥</div>
+                <p>Start typing to search for movies & TV shows</p>
+            </div>
+        </section>
+
+        <!-- Watchlist Section -->
+        <section class="section" id="section-watchlist">
+            <div class="watchlist-header">
+                <h2 class="section-title">My Watchlist</h2>
+                <div class="watchlist-actions">
+                    <button class="btn btn-outline btn-sm" id="export-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Export CSV
+                    </button>
+                </div>
+            </div>
+
+            <!-- Media type toggle for watchlist -->
+            <div class="watchlist-media-toggle" id="watchlist-media-toggle">
+                <button class="wl-media-btn active" data-wl-type="movies" id="wl-toggle-movies">
+                    <span class="media-icon">🎬</span> Movies
+                </button>
+                <button class="wl-media-btn" data-wl-type="tv" id="wl-toggle-tv">
+                    <span class="media-icon">📺</span> TV Series
+                </button>
+            </div>
+
+            <div class="watchlist-filters" id="watchlist-filters">
+                <div class="status-tabs">
+                    <button class="status-tab active" data-status="all" id="status-all">All</button>
+                    <button class="status-tab" data-status="plan_to_watch" id="status-plan">Plan to Watch</button>
+                    <button class="status-tab" data-status="watching" id="status-watching">Watching</button>
+                    <button class="status-tab" data-status="watched" id="status-watched">Watched</button>
+                </div>
+                <select id="sort-select" class="filter-select">
+                    <option value="added">Recently Added</option>
+                    <option value="rating">My Rating</option>
+                    <option value="title">Title A-Z</option>
+                </select>
+            </div>
+
+            <div class="results-grid" id="watchlist-results"></div>
+            <div class="loading-spinner" id="watchlist-loading" style="display:none;">
+                <div class="spinner"></div>
+            </div>
+            <div class="empty-state" id="watchlist-empty" style="display:none;">
+                <div class="empty-icon">📋</div>
+                <p>Your watchlist is empty</p>
+                <span class="empty-hint">Search for movies or TV shows and add them here!</span>
+            </div>
+        </section>
+
+        <!-- Recommendations Section -->
+        <section class="section" id="section-recommendations">
+            <div class="section-header-row">
+                <div>
+                    <h2 class="section-title">Recommended For You</h2>
+                    <p class="section-subtitle">Based on your highly rated movies and shows</p>
+                </div>
+            </div>
+            <!-- Rec type toggle -->
+            <div class="rec-media-toggle" id="rec-media-toggle">
+                <button class="rec-media-btn active" data-rec-type="movies" id="rec-toggle-movies">
+                    <span class="media-icon">🎬</span> Movie Picks
+                </button>
+                <button class="rec-media-btn" data-rec-type="tv" id="rec-toggle-tv">
+                    <span class="media-icon">📺</span> TV Picks
+                </button>
+            </div>
+            <div class="results-grid" id="recommendations-results"></div>
+            <div class="loading-spinner" id="recommendations-loading" style="display:none;">
+                <div class="spinner"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Movie/TV Detail Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal" id="movie-modal">
+            <button class="modal-close" id="modal-close">✕</button>
+            <div class="modal-backdrop" id="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-poster" id="modal-poster"></div>
+                <div class="modal-info">
+                    <div class="modal-type-badge" id="modal-type-badge"></div>
+                    <h2 class="modal-title" id="modal-title"></h2>
+                    <div class="modal-meta">
+                        <span class="modal-year" id="modal-year"></span>
+                        <span class="modal-rating-badge" id="modal-tmdb-rating">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <span id="modal-rating-value"></span>
+                        </span>
+                    </div>
+                    <div class="modal-genres" id="modal-genres"></div>
+                    <p class="modal-overview" id="modal-overview"></p>
+
+                    <!-- Watchlist Controls -->
+                    <div class="modal-controls" id="modal-controls">
+                        <div class="control-group">
+                            <label>Status</label>
+                            <select id="modal-status" class="filter-select">
+                                <option value="plan_to_watch">Plan to Watch</option>
+                                <option value="watching">Watching</option>
+                                <option value="watched">Watched</option>
+                            </select>
+                        </div>
+                        <!-- TV Progress Tracking -->
+                        <div class="control-group tv-progress-group" id="tv-progress-group" style="display:none;">
+                            <label>Watch Progress</label>
+                            <div class="progress-inputs">
+                                <div class="progress-field">
+                                    <span class="progress-label">Season</span>
+                                    <input type="number" id="modal-current-season" min="1" value="1" class="progress-input">
+                                </div>
+                                <div class="progress-field">
+                                    <span class="progress-label">Episode</span>
+                                    <input type="number" id="modal-current-episode" min="1" value="1" class="progress-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label>Your Rating</label>
+                            <div class="star-rating" id="modal-stars">
+                                <button class="star" data-rating="1">★</button>
+                                <button class="star" data-rating="2">★</button>
+                                <button class="star" data-rating="3">★</button>
+                                <button class="star" data-rating="4">★</button>
+                                <button class="star" data-rating="5">★</button>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label>Notes</label>
+                            <textarea id="modal-notes" placeholder="Add your personal notes..." rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="modal-buttons" id="modal-buttons">
+                        <button class="btn btn-primary" id="modal-add-btn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add to Watchlist
+                        </button>
+                        <button class="btn btn-success" id="modal-update-btn" style="display:none;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            Save Changes
+                        </button>
+                        <button class="btn btn-danger" id="modal-remove-btn" style="display:none;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
